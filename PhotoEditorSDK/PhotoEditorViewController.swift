@@ -51,9 +51,9 @@ public class PhotoEditorViewController: UIViewController {
     var state: PhotoEditorState = .empty {
         didSet {
             editingToolbar.isHidden = state == .empty
+            saveButton.isHidden = state != .empty
             normalToolbar.isHidden = state != .empty
             topScrollView.isScrollEnabled = state == .empty
-//            topScrollView.isUserInteractionEnabled = state == .empty
             topScrollView.pinchGestureRecognizer?.isEnabled = state == .empty
             topScrollView.panGestureRecognizer.isEnabled = state == .empty
             colorCollectionView.isHidden = state == .empty

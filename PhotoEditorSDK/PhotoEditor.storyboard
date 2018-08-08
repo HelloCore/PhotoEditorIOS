@@ -24,10 +24,10 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j0S-7j-9Cs">
                                         <rect key="frame" x="0.0" y="0.0" width="1024" height="600"/>
                                         <subviews>
-                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="VeT-dT-VZD">
+                                            <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="VeT-dT-VZD">
                                                 <rect key="frame" x="392" y="236" width="240" height="128"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pCQ-qs-hUx">
+                                            <imageView clipsSubviews="YES" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pCQ-qs-hUx">
                                                 <rect key="frame" x="392" y="236" width="240" height="128"/>
                                             </imageView>
                                         </subviews>
@@ -60,10 +60,23 @@
                                 <rect key="frame" x="0.0" y="20" width="1024" height="64"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Vv4-CA-b1a">
-                                        <rect key="frame" x="929" y="0.0" width="85" height="64"/>
+                                        <rect key="frame" x="871" y="0.0" width="143" height="64"/>
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qA2-sd-Pv2">
+                                                <rect key="frame" x="0.0" y="0.0" width="48" height="64"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="0.30649207750000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="gqf-Nc-RIZ"/>
+                                                    <action selector="undoButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="t3Y-Uz-CNF"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MAT-cq-oEk">
-                                                <rect key="frame" x="0.0" y="0.0" width="38" height="64"/>
+                                                <rect key="frame" x="58" y="0.0" width="38" height="64"/>
                                                 <state key="normal" title="Undo">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
@@ -75,7 +88,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KnE-7d-teI">
-                                                <rect key="frame" x="48" y="0.0" width="37" height="64"/>
+                                                <rect key="frame" x="106" y="0.0" width="37" height="64"/>
                                                 <state key="normal" title="Done">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
@@ -86,19 +99,28 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="cJy-Jp-Vw0">
-                                        <rect key="frame" x="884" y="0.0" width="130" height="64"/>
+                                        <rect key="frame" x="795" y="0.0" width="219" height="64"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VqY-Uj-4DV">
-                                                <rect key="frame" x="0.0" y="0.0" width="44" height="64"/>
-                                                <state key="normal" title="Shape">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="64"/>
+                                                <state key="normal" title="Circle">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="shapeButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="9V6-Hi-jwg"/>
+                                                    <action selector="circleButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="iYS-Uz-T5M"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="99L-nn-aVi">
+                                                <rect key="frame" x="50" y="0.0" width="83" height="64"/>
+                                                <state key="normal" title="Rectangular">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="rectangularButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="ZxV-hm-rhD"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u9e-ai-VVY">
-                                                <rect key="frame" x="54" y="0.0" width="36" height="64"/>
+                                                <rect key="frame" x="143" y="0.0" width="36" height="64"/>
                                                 <state key="normal" title="Draw">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
@@ -107,7 +129,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rwr-Gj-1bR">
-                                                <rect key="frame" x="100" y="0.0" width="30" height="64"/>
+                                                <rect key="frame" x="189" y="0.0" width="30" height="64"/>
                                                 <state key="normal" title="Text">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
@@ -223,6 +245,15 @@
                                             <action selector="clearButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="y8u-gZ-y8S"/>
                                         </connections>
                                     </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.5" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="Q8e-de-OhF">
+                                        <rect key="frame" x="8" y="10" width="204" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="Ebd-kJ-LQD"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="shapeLineWidthValueChanged:" destination="816-de-A3M" eventType="valueChanged" id="Ub0-eZ-q9G"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -236,10 +267,12 @@
                                     <constraint firstAttribute="trailing" secondItem="aIV-r1-t1e" secondAttribute="trailing" constant="10" id="TOu-vA-5mD"/>
                                     <constraint firstAttribute="height" constant="84" id="YZr-sW-xKC"/>
                                     <constraint firstItem="ehU-L3-agI" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="10" id="bh5-Jz-bV0"/>
+                                    <constraint firstItem="Q8e-de-OhF" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="10" id="bvH-5y-pQ3"/>
                                     <constraint firstItem="apI-rR-RPi" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="42" id="iNb-o5-hrM"/>
                                     <constraint firstItem="aIV-r1-t1e" firstAttribute="centerY" secondItem="xoM-Mp-F9m" secondAttribute="centerY" id="ikB-8F-4yF"/>
                                     <constraint firstItem="48W-T4-r0U" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="10" id="lfg-f9-tXN"/>
                                     <constraint firstItem="ehU-L3-agI" firstAttribute="leading" secondItem="xoM-Mp-F9m" secondAttribute="leading" constant="10" id="mig-EH-b2h"/>
+                                    <constraint firstItem="Q8e-de-OhF" firstAttribute="leading" secondItem="xoM-Mp-F9m" secondAttribute="leading" constant="10" id="tn8-p3-sPf"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -261,8 +294,10 @@
                     <connections>
                         <outlet property="backButton" destination="52b-vF-fZ6" id="AJh-c0-VlV"/>
                         <outlet property="bottomToolbar" destination="xoM-Mp-F9m" id="5Si-oi-kzs"/>
+                        <outlet property="cancelButton" destination="qA2-sd-Pv2" id="Z33-Fi-qAn"/>
                         <outlet property="canvasContainerView" destination="j0S-7j-9Cs" id="ULQ-BW-MFG"/>
                         <outlet property="canvasImageView" destination="pCQ-qs-hUx" id="61K-Ws-n1L"/>
+                        <outlet property="circleButton" destination="VqY-Uj-4DV" id="HUX-7e-6NH"/>
                         <outlet property="clearButton" destination="5T0-tA-fUx" id="1ue-qx-wvm"/>
                         <outlet property="colorCollectionView" destination="apI-rR-RPi" id="blR-jS-FTO"/>
                         <outlet property="doneButton" destination="KnE-7d-teI" id="P9K-OR-3CS"/>
@@ -271,8 +306,9 @@
                         <outlet property="imageView" destination="VeT-dT-VZD" id="j69-aF-Fpb"/>
                         <outlet property="lineWidthSlider" destination="48W-T4-r0U" id="9tD-YG-GdG"/>
                         <outlet property="normalToolbar" destination="cJy-Jp-Vw0" id="eQf-gR-WMB"/>
+                        <outlet property="rectangularButton" destination="99L-nn-aVi" id="Ywo-yK-rMY"/>
                         <outlet property="saveButton" destination="aIV-r1-t1e" id="USA-AE-s0g"/>
-                        <outlet property="shapeButton" destination="VqY-Uj-4DV" id="EBF-SL-0fc"/>
+                        <outlet property="shapeLineWidthSlider" destination="Q8e-de-OhF" id="j0m-KW-wy2"/>
                         <outlet property="textButton" destination="Rwr-Gj-1bR" id="bbA-wH-6Di"/>
                         <outlet property="textSizeSlider" destination="ehU-L3-agI" id="YIW-Jj-iYW"/>
                         <outlet property="topLeftToolbar" destination="rfQ-Yl-5uo" id="fhV-m9-XYV"/>

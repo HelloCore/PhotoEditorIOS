@@ -22,6 +22,7 @@
 		857CE2AC2118437400DA08AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 857CE2AA2118437400DA08AB /* Main.storyboard */; };
 		857CE2AE2118437500DA08AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 857CE2AD2118437500DA08AB /* Assets.xcassets */; };
 		857CE2B12118437500DA08AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 857CE2AF2118437500DA08AB /* LaunchScreen.storyboard */; };
+		857F7490211AD0AF0097E774 /* ShapeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F748F211AD0AF0097E774 /* ShapeItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		857CE2AD2118437500DA08AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		857CE2B02118437500DA08AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		857CE2B22118437500DA08AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		857F748F211AD0AF0097E774 /* ShapeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 			children = (
 				8566F8432118484E00A5CDF7 /* DrawingPath.swift */,
 				8566F8482118562600A5CDF7 /* ColorItems.swift */,
+				857F748F211AD0AF0097E774 /* ShapeItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				8566F8492118562600A5CDF7 /* ColorItems.swift in Sources */,
 				8566F8442118484E00A5CDF7 /* DrawingPath.swift in Sources */,
 				8566F83F211843D700A5CDF7 /* PhotoEditorViewController.swift in Sources */,
+				857F7490211AD0AF0097E774 /* ShapeItem.swift in Sources */,
 				8566F847211850E900A5CDF7 /* CGPointExtensions.swift in Sources */,
 				8566F841211843E700A5CDF7 /* PhotoEditorManager.swift in Sources */,
 			);

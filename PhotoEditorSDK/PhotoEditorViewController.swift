@@ -37,8 +37,12 @@ public class PhotoEditorViewController: UIViewController {
     
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
-    @IBOutlet weak var shapeButton: UIButton!
+    @IBOutlet weak var circleButton: UIButton!
+    @IBOutlet weak var rectangularButton: UIButton!
+    @IBOutlet weak var squareButton: UIButton!
+    
     @IBOutlet weak var drawButton: UIButton!
     @IBOutlet weak var textButton: UIButton!
     
@@ -51,6 +55,8 @@ public class PhotoEditorViewController: UIViewController {
     
     @IBOutlet weak var bottomToolbar: UIView!
     @IBOutlet weak var textSizeSlider: UISlider!
+    
+    @IBOutlet weak var shapeLineWidthSlider: UISlider!
     
     var originalImage: UIImage?
     
@@ -69,6 +75,7 @@ public class PhotoEditorViewController: UIViewController {
             case .empty:
                 lineWidthSlider.isHidden = true
                 textSizeSlider.isHidden = true
+                shapeLineWidthSlider.isHidden = true
                 break
                 
             case .draw:
@@ -76,17 +83,21 @@ public class PhotoEditorViewController: UIViewController {
                 textSizeSlider.isHidden = true
                 undoButton.isHidden = false
                 lineWidthSlider.isHidden = false
+                shapeLineWidthSlider.isHidden = true
                 break
                 
             case .shape:
                 textSizeSlider.isHidden = true
                 undoButton.isHidden = true
                 lineWidthSlider.isHidden = true
+                shapeLineWidthSlider.isHidden = false
                 break
+            
             case .text:
                 textSizeSlider.isHidden = false
                 undoButton.isHidden = true
                 lineWidthSlider.isHidden = true
+                shapeLineWidthSlider.isHidden = true
                 break
                 
             }
@@ -107,6 +118,9 @@ public class PhotoEditorViewController: UIViewController {
                 }
                 if let textView = currentTextView {
                     textView.textColor = drawingColor
+                }
+                if let currentShapeItem = currentShapeIem {
+                    currentShapeItem.color = drawingColor
                 }
             }
         }
@@ -132,10 +146,16 @@ public class PhotoEditorViewController: UIViewController {
     
     var keyboardTapGesture: UITapGestureRecognizer!
     
+    // Shape
+    var savedShapes = [ShapeItem]()
+    var shapeGestureList = [UIPanGestureRecognizer]()
+    var shapePinchGestureList = [UIPinchGestureRecognizer]()
+    var shapeRotationGestureList = [UIRotationGestureRecognizer]()
+    var currentShapeIem: ShapeItem?
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
-
+      
         self.imageView.image = originalImage
         self.mode = .empty
         
@@ -172,6 +192,18 @@ public class PhotoEditorViewController: UIViewController {
         }
     }
     
+    @IBAction func cancelButtonTap(_ sender: Any) {
+        if self.mode == .shape {
+            if savedShapes.count > 0 {
+                savedShapes.removeLast()
+            }
+            self.currentShapeIem?.imageView.removeFromSuperview()
+            self.currentShapeIem = nil
+            
+            self.mode = .empty
+        }
+    }
+    
     @IBAction func doneButtonTap(_ sender: Any) {
         switch mode {
         case .empty:
@@ -186,6 +218,7 @@ public class PhotoEditorViewController: UIViewController {
             break
             
         case .shape:
+            self.currentShapeIem = nil
             break
             
         case .text:
@@ -199,8 +232,46 @@ public class PhotoEditorViewController: UIViewController {
         self.mode = .empty
     }
     
-    @IBAction func shapeButtonTap(_ sender: Any) {
+    func createShape(_ type: ShapeType) -> ShapeItem {
+        let shape = ShapeItem(type: type,
+                              parent: canvasImageView,
+                              lineWidth: CGFloat(shapeLineWidthSlider.value),
+                              color: drawingColor)
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleMovePanGesture(_:)))
+        gesture.delegate = self
+        shape.imageView.addGestureRecognizer(gesture)
+        shapeGestureList.append(gesture)
+        
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleShapePinchGesture(_:)))
+        pinchGesture.delegate = self
+        shape.imageView.addGestureRecognizer(pinchGesture)
+        shapePinchGestureList.append(pinchGesture)
+        
+        let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(handleShapeRotationGesture(_:)))
+        rotateGesture.delegate = self
+        shape.imageView.addGestureRecognizer(rotateGesture)
+        shapeRotationGestureList.append(rotateGesture)
+        return shape
+    }
+    
+    func changeInternalShapeMode(_ type: ShapeType) {
         self.mode = .shape
+        let shape = self.createShape(type)
+        self.canvasImageView.addSubview(shape.imageView)
+        self.currentShapeIem = shape
+        self.savedShapes.append(shape)
+    }
+    
+    @IBAction func circleButtonTap(_ sender: Any) {
+        self.changeInternalShapeMode(.circle)
+    }
+    
+    @IBAction func rectangularButtonTap(_ sender: Any) {
+        self.changeInternalShapeMode(.rectangular)
+    }
+    
+    @IBAction func squareButtonTap(_ sender: Any) {
+        self.changeInternalShapeMode(.square)
     }
     
     @IBAction func drawButtonTap(_ sender: Any) {
@@ -222,17 +293,26 @@ public class PhotoEditorViewController: UIViewController {
         textView.textAlignment = .center
         textView.backgroundColor = UIColor.clear
         
-        self.canvasImageView.addSubview(textView)
         
         let size = textView.sizeThatFits(CGSize(width: canvasImageView.frame.size.width, height: 100))
-        let newFrame = CGRect(x: (canvasImageView.frame.size.width - size.width) / 2,
-                                y: canvasImageView.frame.origin.y + 50 ,
+        
+        let frame = CGRect(x: (UIScreen.main.bounds.size.width - size.width) / 2,
+                           y: (UIScreen.main.bounds.size.height - size.height) / 2,
+                           width: size.width,
+                           height: size.height)
+        
+        let newFrame = self.view.convert(frame, to: self.canvasImageView)
+        
+        
+        textView.frame = CGRect(x: (newFrame.midX) - (size.width / 2),
+                                y: (newFrame.midY) - (size.height / 2),
                                 width: size.width,
                                 height: size.height)
         
-        textView.frame = newFrame
+        self.canvasImageView.addSubview(textView)
+
         
-        let textPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleTextPanGesture(_:)))
+        let textPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleMovePanGesture(_:)))
         textPanGesture.delegate = self
         textView.addGestureRecognizer(textPanGesture)
         
@@ -278,8 +358,25 @@ public class PhotoEditorViewController: UIViewController {
         textViewList.removeAll()
         textGestureList.removeAll()
         savedPaths.removeAll()
+        
+        savedShapes.forEach { $0.imageView.removeFromSuperview() }
+        savedShapes.removeAll()
+        
+        shapeGestureList.removeAll()
+        shapePinchGestureList.removeAll()
+        shapeRotationGestureList.removeAll()
+        
         self.renderCanvas()
     }
+    
+    @IBAction func shapeLineWidthValueChanged(_ sender: Any) {
+        if self.mode == .shape {
+            if let currentShapeItem = currentShapeIem {
+                currentShapeItem.lineWidth = CGFloat(shapeLineWidthSlider.value)
+            }
+        }
+    }
+    
     
     // MARK: - Text
     @IBAction func textSizeSliderValueChanged(_ sender: Any) {
@@ -295,34 +392,16 @@ public class PhotoEditorViewController: UIViewController {
         }
     }
     
-    @objc func handleTextPanGesture(_ gesture: UIPanGestureRecognizer) {
-        if self.mode == .empty || self.mode == .text {
+    @objc func handleMovePanGesture(_ gesture: UIPanGestureRecognizer) {
+        if self.mode == .empty || self.mode == .shape || self.mode == .text {
+            
             guard let view = gesture.view else { return }
             let location = gesture.translation(in: canvasImageView)
-            switch gesture.state {
-            case .began:
-                
-                break
-                
-            case .changed:
-                view.transform = CGAffineTransform(translationX: location.x, y: location.y)
-                break
-                
-            case .possible: break
-                
-            case .cancelled, .ended, .failed:
-                let transform = view.transform
-                let tx = transform.tx
-                let ty = transform.ty
-                let oldFrame = view.frame
-                let newFrame = CGRect(x: oldFrame.origin.x + tx,
-                                      y: oldFrame.origin.y + ty,
-                                      width: oldFrame.width,
-                                      height: oldFrame.height)
-                view.frame = newFrame
-                view.transform = .identity
-                break
-            }
+            
+            view.center = CGPoint(x: view.center.x + location.x ,
+                                  y: view.center.y + location.y)
+//            view.transform = view.transform.translatedBy(x: location.x, y: location.y)
+            gesture.setTranslation(CGPoint.zero, in: view)
         }
     }
     
@@ -354,6 +433,7 @@ public class PhotoEditorViewController: UIViewController {
             }
         }
     }
+    
     
     
     func drawLineFrom(_ fromPoint: CGPoint, toPoint: CGPoint) {
@@ -392,6 +472,27 @@ public class PhotoEditorViewController: UIViewController {
         }
     }
     
+    var startLocation: CGPoint?
+    // MARK: Shape
+    @objc func handleShapePinchGesture(_ gesture: UIPinchGestureRecognizer) {
+        if gesture.state == .began || gesture.state == .changed {
+            if let view = gesture.view {
+                
+                view.transform = view.transform.scaledBy(x: gesture.scale, y: gesture.scale)
+                gesture.scale = 1.0
+            }
+        }
+    }
+    
+    @objc func handleShapeRotationGesture(_ gesture: UIRotationGestureRecognizer) {
+        if gesture.state == .began || gesture.state == .changed {
+            if let view = gesture.view {
+                view.transform = view.transform.rotated(by: gesture.rotation)
+                gesture.rotation = 0
+            }
+        }
+    }
+    
 }
 
 extension PhotoEditorViewController: UIScrollViewDelegate {
@@ -426,7 +527,7 @@ extension PhotoEditorViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         if gestureRecognizer == keyboardTapGesture {
-            let touchLocation = gestureRecognizer.location(in: nil)
+            let touchLocation = gestureRecognizer.location(in: self.view)
             let isTouchOutsideToolbar = !bottomToolbar.frame.contains(touchLocation)
             
             return self.currentTextView != nil && isTouchOutsideToolbar
@@ -435,9 +536,39 @@ extension PhotoEditorViewController: UIGestureRecognizerDelegate {
             return self.mode == .draw
         }
         if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
-            if self.textGestureList.contains(panGesture) {
-                return self.mode == .empty || self.mode == .text
+            let shouldCheckText = self.mode == .empty || self.mode == .text
+            let shouldCheckShape = self.mode == .empty || self.mode == .shape
+            
+            if shouldCheckText {
+                let isTextGesture = self.textGestureList.contains(panGesture)
+                if isTextGesture { return true }
             }
+            if shouldCheckShape {
+                let isShapeGesture = self.shapeGestureList.contains(panGesture)
+                if isShapeGesture { return true }
+            }
+        }
+        if let pinchGesture = gestureRecognizer as? UIPinchGestureRecognizer {
+            let shouldCheckShape = self.mode == .empty || self.mode == .shape
+            if shouldCheckShape {
+                return self.shapePinchGestureList.contains(pinchGesture)
+            }
+        }
+        if let rotationGesture = gestureRecognizer as? UIRotationGestureRecognizer {
+            let shouldCheckShape = self.mode == .empty || self.mode == .shape
+            if shouldCheckShape {
+                return self.shapeRotationGestureList.contains(rotationGesture)
+            }
+        }
+        return false
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UIRotationGestureRecognizer && otherGestureRecognizer is UIPinchGestureRecognizer
+            || gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIRotationGestureRecognizer {
+            if otherGestureRecognizer == topScrollView.panGestureRecognizer { return false }
+            if otherGestureRecognizer == topScrollView.pinchGestureRecognizer { return false }
+            return true
         }
         return false
     }
@@ -490,9 +621,10 @@ extension PhotoEditorViewController {
             let keyboardHeight = keyboardSize.height
             self.topScrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardHeight, 0)
             
-            if let textView = self.currentTextView {
-                self.topScrollView.scrollRectToVisible(textView.frame, animated: true)
-            }
+//            if let textView = self.currentTextView {
+//                self.topScrollView.scrollRectToVisible(textView.frame, animated: true)
+//
+//            }
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let `self` = self else { return }
                 self.bottomToolbar.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)

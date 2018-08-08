@@ -27,7 +27,7 @@
                                             <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="VeT-dT-VZD">
                                                 <rect key="frame" x="392" y="236" width="240" height="128"/>
                                             </imageView>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pCQ-qs-hUx">
+                                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pCQ-qs-hUx">
                                                 <rect key="frame" x="392" y="236" width="240" height="128"/>
                                             </imageView>
                                         </subviews>
@@ -156,6 +156,16 @@
                                             <constraint firstAttribute="height" constant="29" id="xN0-wT-HYG"/>
                                         </constraints>
                                     </slider>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="14" minValue="5" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="ehU-L3-agI">
+                                        <rect key="frame" x="8" y="10" width="204" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="29" id="6LB-l3-Jam"/>
+                                            <constraint firstAttribute="width" constant="200" id="6oa-8d-xK3"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="textSizeSliderValueChanged:" destination="816-de-A3M" eventType="valueChanged" id="km9-8T-sAx"/>
+                                        </connections>
+                                    </slider>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="apI-rR-RPi">
                                         <rect key="frame" x="10" y="42" width="1004" height="32"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -204,19 +214,32 @@
                                             <action selector="saveButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="xyQ-Bu-OEs"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5T0-tA-fUx">
+                                        <rect key="frame" x="10" y="27" width="36" height="30"/>
+                                        <state key="normal" title="Clear">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clearButtonTap:" destination="816-de-A3M" eventType="touchUpInside" id="y8u-gZ-y8S"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="apI-rR-RPi" secondAttribute="bottom" constant="10" id="66h-ZI-zEg"/>
+                                    <constraint firstItem="5T0-tA-fUx" firstAttribute="centerY" secondItem="aIV-r1-t1e" secondAttribute="centerY" id="9pr-NN-DJp"/>
                                     <constraint firstItem="apI-rR-RPi" firstAttribute="leading" secondItem="xoM-Mp-F9m" secondAttribute="leading" constant="10" id="B4u-pN-1jr"/>
                                     <constraint firstItem="48W-T4-r0U" firstAttribute="leading" secondItem="xoM-Mp-F9m" secondAttribute="leading" constant="10" id="Gvc-GO-9kR"/>
                                     <constraint firstItem="aIV-r1-t1e" firstAttribute="height" secondItem="xoM-Mp-F9m" secondAttribute="height" constant="-40" id="KQ3-cL-OKE"/>
                                     <constraint firstAttribute="trailing" secondItem="apI-rR-RPi" secondAttribute="trailing" constant="10" id="LYu-rv-i1k"/>
+                                    <constraint firstItem="5T0-tA-fUx" firstAttribute="leading" secondItem="xoM-Mp-F9m" secondAttribute="leading" constant="10" id="QZc-6J-wFf"/>
                                     <constraint firstAttribute="trailing" secondItem="aIV-r1-t1e" secondAttribute="trailing" constant="10" id="TOu-vA-5mD"/>
                                     <constraint firstAttribute="height" constant="84" id="YZr-sW-xKC"/>
+                                    <constraint firstItem="ehU-L3-agI" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="10" id="bh5-Jz-bV0"/>
                                     <constraint firstItem="apI-rR-RPi" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="42" id="iNb-o5-hrM"/>
                                     <constraint firstItem="aIV-r1-t1e" firstAttribute="centerY" secondItem="xoM-Mp-F9m" secondAttribute="centerY" id="ikB-8F-4yF"/>
                                     <constraint firstItem="48W-T4-r0U" firstAttribute="top" secondItem="xoM-Mp-F9m" secondAttribute="top" constant="10" id="lfg-f9-tXN"/>
+                                    <constraint firstItem="ehU-L3-agI" firstAttribute="leading" secondItem="xoM-Mp-F9m" secondAttribute="leading" constant="10" id="mig-EH-b2h"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -237,8 +260,10 @@
                     </view>
                     <connections>
                         <outlet property="backButton" destination="52b-vF-fZ6" id="AJh-c0-VlV"/>
+                        <outlet property="bottomToolbar" destination="xoM-Mp-F9m" id="5Si-oi-kzs"/>
                         <outlet property="canvasContainerView" destination="j0S-7j-9Cs" id="ULQ-BW-MFG"/>
                         <outlet property="canvasImageView" destination="pCQ-qs-hUx" id="61K-Ws-n1L"/>
+                        <outlet property="clearButton" destination="5T0-tA-fUx" id="1ue-qx-wvm"/>
                         <outlet property="colorCollectionView" destination="apI-rR-RPi" id="blR-jS-FTO"/>
                         <outlet property="doneButton" destination="KnE-7d-teI" id="P9K-OR-3CS"/>
                         <outlet property="drawButton" destination="u9e-ai-VVY" id="wRv-Pu-ecR"/>
@@ -249,6 +274,7 @@
                         <outlet property="saveButton" destination="aIV-r1-t1e" id="USA-AE-s0g"/>
                         <outlet property="shapeButton" destination="VqY-Uj-4DV" id="EBF-SL-0fc"/>
                         <outlet property="textButton" destination="Rwr-Gj-1bR" id="bbA-wH-6Di"/>
+                        <outlet property="textSizeSlider" destination="ehU-L3-agI" id="YIW-Jj-iYW"/>
                         <outlet property="topLeftToolbar" destination="rfQ-Yl-5uo" id="fhV-m9-XYV"/>
                         <outlet property="topScrollView" destination="QlF-T2-a3z" id="bC0-G6-ZUD"/>
                         <outlet property="undoButton" destination="MAT-cq-oEk" id="8Un-x3-q9V"/>
